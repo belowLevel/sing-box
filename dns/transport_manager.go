@@ -282,9 +282,9 @@ func (m *TransportManager) Create(ctx context.Context, logger log.ContextLogger,
 		m.dependByTag[dependency] = append(m.dependByTag[dependency], tag)
 	}
 	if tag == m.defaultTag || (m.defaultTag == "" && m.defaultTransport == nil) {
-		if transport.Type() == C.DNSTypeFakeIP {
-			return E.New("default server cannot be fakeip")
-		}
+		//if transport.Type() == C.DNSTypeFakeIP {
+		//	return E.New("default server cannot be fakeip")
+		//}
 		m.defaultTransport = transport
 		if m.started {
 			m.logger.Info("updated default server to ", transport.Tag())
