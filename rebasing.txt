@@ -1,0 +1,8 @@
+git checkout old commit id
+git cherry-pick commmit id you committed
+git push origin HEAD:stable --force-with-lease
+
+
+git fetch origin
+git reset --hard origin/stable
+git clean -fd

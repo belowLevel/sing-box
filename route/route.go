@@ -702,6 +702,10 @@ match:
 			selectedRuleIndex = currentRuleIndex
 			break match
 		}
+		if actionType == C.RuleActionTypeReordingDomain {
+			recordingAction := currentRule.Action().(*R.RuleActionReordingDomain)
+			recordingAction.Record(metadata.Domain)
+		}
 	}
 	return
 }

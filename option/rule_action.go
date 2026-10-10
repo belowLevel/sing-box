@@ -16,14 +16,15 @@ import (
 )
 
 type _RuleAction struct {
-	Action              string                    `json:"action,omitempty" enum:"route,route-options,direct,bypass,reject,hijack-dns,sniff,resolve"`
-	RouteOptions        RouteActionOptions        `json:"-"`
-	RouteOptionsOptions RouteOptionsActionOptions `json:"-"`
-	DirectOptions       DirectActionOptions       `json:"-"`
-	BypassOptions       RouteActionOptions        `json:"-"`
-	RejectOptions       RejectActionOptions       `json:"-"`
-	SniffOptions        RouteActionSniff          `json:"-"`
-	ResolveOptions      RouteActionResolve        `json:"-"`
+	Action                 string                     `json:"action,omitempty" enum:"route,route-options,direct,bypass,reject,hijack-dns,sniff,resolve"`
+	RouteOptions           RouteActionOptions         `json:"-"`
+	RouteOptionsOptions    RouteOptionsActionOptions  `json:"-"`
+	DirectOptions          DirectActionOptions        `json:"-"`
+	BypassOptions          RouteActionOptions         `json:"-"`
+	RejectOptions          RejectActionOptions        `json:"-"`
+	SniffOptions           RouteActionSniff           `json:"-"`
+	ResolveOptions         RouteActionResolve         `json:"-"`
+	RecordingDomainOptions RouteActionRecordingDomain `json:"-"`
 }
 
 type RuleAction _RuleAction
@@ -84,6 +85,8 @@ func (r *RuleAction) UnmarshalJSON(data []byte) error {
 		v = &r.SniffOptions
 	case C.RuleActionTypeResolve:
 		v = &r.ResolveOptions
+	case C.RuleActionTypeReordingDomain:
+		v = &r.RecordingDomainOptions
 	default:
 		return E.New("unknown rule action: " + r.Action)
 	}
@@ -420,4 +423,8 @@ func dnsActionUnion(builder schema.Builder) (*schema.Node, error) {
 		{action: C.RuleActionTypeReject, build: rejectWithRace},
 		{action: C.RuleActionTypePredefined, structType: reflect.TypeFor[DNSRouteActionPredefined](), build: raceProperty},
 	})
+}
+
+type RouteActionRecordingDomain struct {
+	RecordingDomainPath string `json:"recording_domain_path"`
 }

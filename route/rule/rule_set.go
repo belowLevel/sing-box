@@ -21,6 +21,8 @@ func NewRuleSet(ctx context.Context, logger logger.ContextLogger, tag string, op
 		return NewLocalRuleSet(ctx, logger, tag, options)
 	case C.RuleSetTypeRemote:
 		return NewRemoteRuleSet(ctx, logger, tag, options)
+	case C.RuleSetTypeTxt:
+		return NewTxtRuleSet(ctx, logger, tag, options)
 	default:
 		return nil, E.New("unknown rule-set type: ", options.Type)
 	}
