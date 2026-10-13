@@ -75,6 +75,8 @@ func (r *RuleSet) UnmarshalJSON(bytes []byte) error {
 		v = &r.LocalOptions
 	case C.RuleSetTypeRemote:
 		v = &r.RemoteOptions
+	case C.RuleSetTypeTxt:
+		v = &r.LocalOptions
 	default:
 		return E.New("unknown rule-set type: " + r.Type)
 	}

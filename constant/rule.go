@@ -14,6 +14,7 @@ const (
 	RuleSetTypeInline   = "inline"
 	RuleSetTypeLocal    = "local"
 	RuleSetTypeRemote   = "remote"
+	RuleSetTypeTxt      = "txt"
 	RuleSetFormatSource = "source"
 	RuleSetFormatBinary = "binary"
 )
@@ -30,17 +31,18 @@ const (
 )
 
 const (
-	RuleActionTypeRoute        = "route"
-	RuleActionTypeRouteOptions = "route-options"
-	RuleActionTypeEvaluate     = "evaluate"
-	RuleActionTypeRespond      = "respond"
-	RuleActionTypeDirect       = "direct"
-	RuleActionTypeBypass       = "bypass"
-	RuleActionTypeReject       = "reject"
-	RuleActionTypeHijackDNS    = "hijack-dns"
-	RuleActionTypeSniff        = "sniff"
-	RuleActionTypeResolve      = "resolve"
-	RuleActionTypePredefined   = "predefined"
+	RuleActionTypeRoute          = "route"
+	RuleActionTypeRouteOptions   = "route-options"
+	RuleActionTypeEvaluate       = "evaluate"
+	RuleActionTypeRespond        = "respond"
+	RuleActionTypeDirect         = "direct"
+	RuleActionTypeBypass         = "bypass"
+	RuleActionTypeReject         = "reject"
+	RuleActionTypeHijackDNS      = "hijack-dns"
+	RuleActionTypeSniff          = "sniff"
+	RuleActionTypeResolve        = "resolve"
+	RuleActionTypePredefined     = "predefined"
+	RuleActionTypeReordingDomain = "recording-domain"
 )
 
 const (

@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"net/netip"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -118,6 +120,10 @@ func NewRuleAction(ctx context.Context, logger logger.ContextLogger, action opti
 			DisableOptimisticCache: action.ResolveOptions.DisableOptimisticCache,
 			RewriteTTL:             action.ResolveOptions.RewriteTTL,
 			ClientSubnet:           action.ResolveOptions.ClientSubnet.Build(netip.Prefix{}),
+		}, nil
+	case C.RuleActionTypeReordingDomain:
+		return &RuleActionReordingDomain{
+			RecordingDomainOptions: action.RecordingDomainOptions,
 		}, nil
 	default:
 		panic(F.ToString("unknown rule action: ", action.Action))
@@ -656,4 +662,35 @@ func rewriteRecords(records []dns.RR, question dns.Question) []dns.RR {
 		}
 		return it
 	})
+}
+
+type RuleActionReordingDomain struct {
+	RecordingDomainOptions option.RouteActionRecordingDomain
+	lock                   sync.Mutex
+}
+
+func (r *RuleActionReordingDomain) Type() string {
+	return C.RuleActionTypeReordingDomain
+}
+
+func (r *RuleActionReordingDomain) String() string {
+	return "Action:DomainRecording"
+}
+
+func (r *RuleActionReordingDomain) Record(domain string) {
+	domain = strings.TrimSpace(domain)
+	if domain == "" {
+		return
+	}
+	r.lock.Lock()
+	defer r.lock.Unlock()
+	filePath, _ := filepath.Abs(r.RecordingDomainOptions.RecordingDomainPath)
+	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
+	if err != nil {
+		return
+	}
+	defer func() {
+		_ = f.Close()
+	}()
+	_, _ = f.WriteString(domain + "\n")
 }
